@@ -1,0 +1,263 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Proxmox VE",
+        "description": "Enter the connection details for your Proxmox VE server.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port",
+          "user": "Username",
+          "realm": "Realm",
+          "auth_method": "Authentication",
+          "token_id": "Token ID",
+          "token_secret": "Token secret",
+          "password": "Password",
+          "verify_ssl": "Verify SSL certificate",
+          "timeout": "Request timeout"
+        },
+        "data_description": {
+          "user": "Username without realm, for example root",
+          "realm": "pam for local users, pve for Proxmox VE users",
+          "verify_ssl": "Turn off for self-signed certificates",
+          "timeout": "Seconds to wait for a reply from Proxmox before an update counts as failed. Raise it for remote or heavily loaded hosts."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate with Proxmox VE",
+        "description": "Your credentials were rejected. Enter them again.",
+        "data": {
+          "host": "Host or IP address",
+          "port": "Port",
+          "user": "Username",
+          "realm": "Realm",
+          "auth_method": "Authentication",
+          "token_id": "Token ID",
+          "token_secret": "Token secret",
+          "password": "Password",
+          "verify_ssl": "Verify SSL certificate",
+          "timeout": "Request timeout"
+        }
+      },
+      "resources": {
+        "title": "Select resources",
+        "data": {
+          "nodes": "Nodes",
+          "qemu": "Virtual machines",
+          "lxc": "LXC containers",
+          "storage": "Storages",
+          "auto_add": "Automatically add new resources",
+          "include_templates": "Include templates"
+        },
+        "data_description": {
+          "auto_add": "When on, VMs, containers, nodes and storages created in Proxmox later are added on their own. Items you deselect above stay excluded.",
+          "include_templates": "VM and container templates never run and report no usage, so their sensors stay empty. Off by default."
+        },
+        "description": "Found {nodes} nodes, {qemu} VMs, {lxc} containers and {storage} storages. Only the selected resources are polled."
+      },
+      "behaviour": {
+        "title": "Polling and cleanup",
+        "data": {
+          "scan_interval": "Update interval",
+          "grace_period": "Keep removed resources for",
+          "enable_controls": "Create control buttons",
+          "node_details": "Fetch node details",
+          "task_window": "Failed task window"
+        },
+        "data_description": {
+          "scan_interval": "Seconds between polls. Proxmox does not push data, so this determines how current the values are. Below 10 seconds mostly adds load.",
+          "grace_period": "Days a VM, container, node or storage may stay missing from Proxmox before its device and entities are deleted. This keeps history through migrations, restores and maintenance. Set to 0 to delete right away.",
+          "enable_controls": "Start, stop and reboot buttons for VMs and containers. These need the VM.PowerMgmt permission. Turn off for a read-only token.",
+          "node_details": "Adds load average, IO wait, swap, root filesystem and kernel version. Costs one extra API call per node and cycle. Turn off on large clusters.",
+          "task_window": "Hours the failed task sensor looks back."
+        },
+        "description": "How often Proxmox is queried and what happens to resources that disappear."
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the Proxmox server. Check host, port and SSL setting.",
+      "invalid_auth": "Credentials rejected. Check username, realm and token or password.",
+      "missing_token": "Token ID and token secret are both required.",
+      "missing_password": "A password is required."
+    },
+    "abort": {
+      "already_configured": "This Proxmox server is already configured.",
+      "cannot_connect": "Could not reach the Proxmox server.",
+      "invalid_auth": "Credentials rejected.",
+      "reauth_successful": "Re-authentication succeeded."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Proxmox options",
+        "menu_options": {
+          "resources": "Resources",
+          "behaviour": "Polling and cleanup"
+        }
+      },
+      "resources": {
+        "title": "Select resources",
+        "data": {
+          "nodes": "Nodes",
+          "qemu": "Virtual machines",
+          "lxc": "LXC containers",
+          "storage": "Storages",
+          "auto_add": "Automatically add new resources",
+          "include_templates": "Include templates"
+        },
+        "data_description": {
+          "auto_add": "When on, VMs, containers, nodes and storages created in Proxmox later are added on their own. Items you deselect above stay excluded.",
+          "include_templates": "VM and container templates never run and report no usage, so their sensors stay empty. Off by default."
+        },
+        "description": "Found {nodes} nodes, {qemu} VMs, {lxc} containers and {storage} storages. Only the selected resources are polled."
+      },
+      "behaviour": {
+        "title": "Polling and cleanup",
+        "data": {
+          "scan_interval": "Update interval",
+          "grace_period": "Keep removed resources for",
+          "enable_controls": "Create control buttons",
+          "node_details": "Fetch node details",
+          "task_window": "Failed task window"
+        },
+        "data_description": {
+          "scan_interval": "Seconds between polls. Proxmox does not push data, so this determines how current the values are. Below 10 seconds mostly adds load.",
+          "grace_period": "Days a VM, container, node or storage may stay missing from Proxmox before its device and entities are deleted. This keeps history through migrations, restores and maintenance. Set to 0 to delete right away.",
+          "enable_controls": "Start, stop and reboot buttons for VMs and containers. These need the VM.PowerMgmt permission. Turn off for a read-only token.",
+          "node_details": "Adds load average, IO wait, swap, root filesystem and kernel version. Costs one extra API call per node and cycle. Turn off on large clusters.",
+          "task_window": "Hours the failed task sensor looks back."
+        },
+        "description": "How often Proxmox is queried and what happens to resources that disappear."
+      }
+    },
+    "abort": {
+      "cannot_connect": "Could not reach the Proxmox server."
+    }
+  },
+  "selector": {
+    "auth_method": {
+      "options": {
+        "token": "API token",
+        "password": "Password"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "cpu": {
+        "name": "CPU"
+      },
+      "cpu_cores": {
+        "name": "CPU cores"
+      },
+      "memory_percent": {
+        "name": "Memory"
+      },
+      "memory_used": {
+        "name": "Memory used"
+      },
+      "memory_total": {
+        "name": "Memory total"
+      },
+      "disk_percent": {
+        "name": "Disk"
+      },
+      "disk_used": {
+        "name": "Disk used"
+      },
+      "disk_free": {
+        "name": "Disk free"
+      },
+      "disk_total": {
+        "name": "Disk total"
+      },
+      "disk_read": {
+        "name": "Disk read"
+      },
+      "disk_write": {
+        "name": "Disk written"
+      },
+      "network_in": {
+        "name": "Network received"
+      },
+      "network_out": {
+        "name": "Network sent"
+      },
+      "last_boot": {
+        "name": "Last boot"
+      },
+      "load_1": {
+        "name": "Load 1 min"
+      },
+      "load_5": {
+        "name": "Load 5 min"
+      },
+      "load_15": {
+        "name": "Load 15 min"
+      },
+      "io_wait": {
+        "name": "IO wait"
+      },
+      "swap_percent": {
+        "name": "Swap"
+      },
+      "rootfs_percent": {
+        "name": "Root filesystem"
+      },
+      "kernel_version": {
+        "name": "Kernel version"
+      },
+      "pve_version": {
+        "name": "Proxmox version"
+      },
+      "failed_tasks": {
+        "name": "Failed tasks 24 h"
+      },
+      "status_text": {
+        "name": "Status",
+        "state": {
+          "running": "Running",
+          "stopped": "Stopped",
+          "paused": "Paused",
+          "suspended": "Suspended",
+          "unknown": "Unknown"
+        }
+      }
+    },
+    "binary_sensor": {
+      "node_online": {
+        "name": "Online"
+      },
+      "guest_running": {
+        "name": "Running"
+      },
+      "storage_problem": {
+        "name": "Problem"
+      }
+    },
+    "button": {
+      "start": {
+        "name": "Start"
+      },
+      "shutdown": {
+        "name": "Shut down"
+      },
+      "stop": {
+        "name": "Stop"
+      },
+      "reboot": {
+        "name": "Reboot"
+      },
+      "reset": {
+        "name": "Reset"
+      },
+      "suspend": {
+        "name": "Suspend"
+      },
+      "resume": {
+        "name": "Resume"
+      }
+    }
+  }
+}

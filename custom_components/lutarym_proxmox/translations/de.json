@@ -1,0 +1,263 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mit Proxmox VE verbinden",
+        "description": "Gib die Verbindungsdaten deines Proxmox-VE-Servers ein.",
+        "data": {
+          "host": "Host oder IP-Adresse",
+          "port": "Port",
+          "user": "Benutzername",
+          "realm": "Realm",
+          "auth_method": "Anmeldung",
+          "token_id": "Token-ID",
+          "token_secret": "Token-Secret",
+          "password": "Passwort",
+          "verify_ssl": "SSL-Zertifikat pruefen",
+          "timeout": "Zeitueberschreitung"
+        },
+        "data_description": {
+          "user": "Benutzername ohne Realm, zum Beispiel root",
+          "realm": "pam fuer lokale Benutzer, pve fuer Proxmox-VE-Benutzer",
+          "verify_ssl": "Bei selbstsigniertem Zertifikat deaktivieren",
+          "timeout": "Sekunden, die auf eine Antwort von Proxmox gewartet wird, bevor ein Abruf als fehlgeschlagen gilt. Bei entfernten oder stark ausgelasteten Hosts erhoehen."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Erneut bei Proxmox VE anmelden",
+        "description": "Die Zugangsdaten wurden abgelehnt. Bitte erneut eingeben.",
+        "data": {
+          "host": "Host oder IP-Adresse",
+          "port": "Port",
+          "user": "Benutzername",
+          "realm": "Realm",
+          "auth_method": "Anmeldung",
+          "token_id": "Token-ID",
+          "token_secret": "Token-Secret",
+          "password": "Passwort",
+          "verify_ssl": "SSL-Zertifikat pruefen",
+          "timeout": "Zeitueberschreitung"
+        }
+      },
+      "resources": {
+        "title": "Ressourcen auswaehlen",
+        "data": {
+          "nodes": "Nodes",
+          "qemu": "Virtuelle Maschinen",
+          "lxc": "LXC-Container",
+          "storage": "Storages",
+          "auto_add": "Neue Ressourcen automatisch aufnehmen",
+          "include_templates": "Templates einbeziehen"
+        },
+        "data_description": {
+          "auto_add": "Ist das aktiv, werden spaeter in Proxmox angelegte VMs, Container, Nodes und Storages von selbst uebernommen. Was du oben abwaehlst, bleibt ausgeschlossen.",
+          "include_templates": "VM- und Container-Templates laufen nie und melden keine Auslastung, ihre Sensoren bleiben deshalb leer. Standardmaessig aus."
+        },
+        "description": "Gefunden: {nodes} Nodes, {qemu} VMs, {lxc} Container und {storage} Storages. Nur die ausgewaehlten Ressourcen werden abgefragt."
+      },
+      "behaviour": {
+        "title": "Abfrage und Aufraeumen",
+        "data": {
+          "scan_interval": "Abfrageintervall",
+          "grace_period": "Verschwundene Ressourcen vorhalten",
+          "enable_controls": "Steuer-Buttons anlegen",
+          "node_details": "Node-Details abrufen",
+          "task_window": "Zeitfenster fehlgeschlagener Tasks"
+        },
+        "data_description": {
+          "scan_interval": "Sekunden zwischen zwei Abfragen. Proxmox sendet keine Daten von sich aus, dieser Wert bestimmt also die Aktualitaet. Unter 10 Sekunden erzeugt vor allem Last.",
+          "grace_period": "Tage, die eine VM, ein Container, ein Node oder ein Storage in Proxmox fehlen darf, bevor Geraet und Entitaeten geloescht werden. So ueberstehen Migrationen, Wiederherstellungen und Wartungen die Abwesenheit ohne Verlust der Verlaufsdaten. 0 loescht sofort.",
+          "enable_controls": "Start, Stopp und Neustart fuer VMs und Container. Dafuer wird das Recht VM.PowerMgmt benoetigt. Bei einem reinen Lese-Token abschalten.",
+          "node_details": "Liefert Last, IO-Wartezeit, Swap, Root-Dateisystem und Kernel-Version. Kostet je Node und Zyklus einen zusaetzlichen API-Aufruf. Bei grossen Clustern abschalten.",
+          "task_window": "Stunden, die der Sensor fuer fehlgeschlagene Tasks zurueckblickt."
+        },
+        "description": "Wie oft Proxmox abgefragt wird und was mit verschwundenen Ressourcen geschieht."
+      }
+    },
+    "error": {
+      "cannot_connect": "Proxmox-Server nicht erreichbar. Pruefe Host, Port und SSL-Einstellung.",
+      "invalid_auth": "Zugangsdaten abgelehnt. Pruefe Benutzername, Realm und Token beziehungsweise Passwort.",
+      "missing_token": "Token-ID und Token-Secret werden beide benoetigt.",
+      "missing_password": "Ein Passwort wird benoetigt."
+    },
+    "abort": {
+      "already_configured": "Dieser Proxmox-Server ist bereits eingerichtet.",
+      "cannot_connect": "Proxmox-Server nicht erreichbar.",
+      "invalid_auth": "Zugangsdaten abgelehnt.",
+      "reauth_successful": "Neuanmeldung erfolgreich."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Proxmox-Optionen",
+        "menu_options": {
+          "resources": "Ressourcen",
+          "behaviour": "Abfrage und Aufraeumen"
+        }
+      },
+      "resources": {
+        "title": "Ressourcen auswaehlen",
+        "data": {
+          "nodes": "Nodes",
+          "qemu": "Virtuelle Maschinen",
+          "lxc": "LXC-Container",
+          "storage": "Storages",
+          "auto_add": "Neue Ressourcen automatisch aufnehmen",
+          "include_templates": "Templates einbeziehen"
+        },
+        "data_description": {
+          "auto_add": "Ist das aktiv, werden spaeter in Proxmox angelegte VMs, Container, Nodes und Storages von selbst uebernommen. Was du oben abwaehlst, bleibt ausgeschlossen.",
+          "include_templates": "VM- und Container-Templates laufen nie und melden keine Auslastung, ihre Sensoren bleiben deshalb leer. Standardmaessig aus."
+        },
+        "description": "Gefunden: {nodes} Nodes, {qemu} VMs, {lxc} Container und {storage} Storages. Nur die ausgewaehlten Ressourcen werden abgefragt."
+      },
+      "behaviour": {
+        "title": "Abfrage und Aufraeumen",
+        "data": {
+          "scan_interval": "Abfrageintervall",
+          "grace_period": "Verschwundene Ressourcen vorhalten",
+          "enable_controls": "Steuer-Buttons anlegen",
+          "node_details": "Node-Details abrufen",
+          "task_window": "Zeitfenster fehlgeschlagener Tasks"
+        },
+        "data_description": {
+          "scan_interval": "Sekunden zwischen zwei Abfragen. Proxmox sendet keine Daten von sich aus, dieser Wert bestimmt also die Aktualitaet. Unter 10 Sekunden erzeugt vor allem Last.",
+          "grace_period": "Tage, die eine VM, ein Container, ein Node oder ein Storage in Proxmox fehlen darf, bevor Geraet und Entitaeten geloescht werden. So ueberstehen Migrationen, Wiederherstellungen und Wartungen die Abwesenheit ohne Verlust der Verlaufsdaten. 0 loescht sofort.",
+          "enable_controls": "Start, Stopp und Neustart fuer VMs und Container. Dafuer wird das Recht VM.PowerMgmt benoetigt. Bei einem reinen Lese-Token abschalten.",
+          "node_details": "Liefert Last, IO-Wartezeit, Swap, Root-Dateisystem und Kernel-Version. Kostet je Node und Zyklus einen zusaetzlichen API-Aufruf. Bei grossen Clustern abschalten.",
+          "task_window": "Stunden, die der Sensor fuer fehlgeschlagene Tasks zurueckblickt."
+        },
+        "description": "Wie oft Proxmox abgefragt wird und was mit verschwundenen Ressourcen geschieht."
+      }
+    },
+    "abort": {
+      "cannot_connect": "Proxmox-Server nicht erreichbar."
+    }
+  },
+  "selector": {
+    "auth_method": {
+      "options": {
+        "token": "API-Token",
+        "password": "Passwort"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "cpu": {
+        "name": "CPU"
+      },
+      "cpu_cores": {
+        "name": "CPU-Kerne"
+      },
+      "memory_percent": {
+        "name": "Arbeitsspeicher"
+      },
+      "memory_used": {
+        "name": "Arbeitsspeicher belegt"
+      },
+      "memory_total": {
+        "name": "Arbeitsspeicher gesamt"
+      },
+      "disk_percent": {
+        "name": "Festplatte"
+      },
+      "disk_used": {
+        "name": "Festplatte belegt"
+      },
+      "disk_free": {
+        "name": "Festplatte frei"
+      },
+      "disk_total": {
+        "name": "Festplatte gesamt"
+      },
+      "disk_read": {
+        "name": "Festplatte gelesen"
+      },
+      "disk_write": {
+        "name": "Festplatte geschrieben"
+      },
+      "network_in": {
+        "name": "Netzwerk empfangen"
+      },
+      "network_out": {
+        "name": "Netzwerk gesendet"
+      },
+      "last_boot": {
+        "name": "Letzter Start"
+      },
+      "load_1": {
+        "name": "Last 1 min"
+      },
+      "load_5": {
+        "name": "Last 5 min"
+      },
+      "load_15": {
+        "name": "Last 15 min"
+      },
+      "io_wait": {
+        "name": "IO-Wartezeit"
+      },
+      "swap_percent": {
+        "name": "Swap"
+      },
+      "rootfs_percent": {
+        "name": "Root-Dateisystem"
+      },
+      "kernel_version": {
+        "name": "Kernel-Version"
+      },
+      "pve_version": {
+        "name": "Proxmox-Version"
+      },
+      "failed_tasks": {
+        "name": "Fehlgeschlagene Tasks 24 h"
+      },
+      "status_text": {
+        "name": "Status",
+        "state": {
+          "running": "Laeuft",
+          "stopped": "Gestoppt",
+          "paused": "Pausiert",
+          "suspended": "Angehalten",
+          "unknown": "Unbekannt"
+        }
+      }
+    },
+    "binary_sensor": {
+      "node_online": {
+        "name": "Online"
+      },
+      "guest_running": {
+        "name": "Laeuft"
+      },
+      "storage_problem": {
+        "name": "Problem"
+      }
+    },
+    "button": {
+      "start": {
+        "name": "Start"
+      },
+      "shutdown": {
+        "name": "Herunterfahren"
+      },
+      "stop": {
+        "name": "Stopp"
+      },
+      "reboot": {
+        "name": "Neustart"
+      },
+      "reset": {
+        "name": "Reset"
+      },
+      "suspend": {
+        "name": "Anhalten"
+      },
+      "resume": {
+        "name": "Fortsetzen"
+      }
+    }
+  }
+}
